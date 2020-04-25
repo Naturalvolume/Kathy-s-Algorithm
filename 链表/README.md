@@ -86,7 +86,7 @@ var middleNode = function(head) {
     return slow;
 };
 ```
-力扣面试题22:倒数第k个节点
+[力扣面试题22:倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
 fast先走到第k个节点，然后fast和slow一起向后走，相当于slow比fast少走k个
 ```javascript
 var getKthFromEnd = function(head, k) {
