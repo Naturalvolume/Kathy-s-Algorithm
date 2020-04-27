@@ -1,12 +1,77 @@
+### 贪心、分治、动态规划的区别
+从一道经典题说明：力扣42:连续子数组的最大和
+
+```javascript
+// 贪心
+var maxSubArray = function(nums) {
+    const len = nums.length;
+    let max = nums[0];
+    let sum = nums[0];
+    for(let i = 1; i < len; i++) {
+        if(sum < 0) {
+            sum = nums[i];
+        } else {
+            sum += nums[i];
+        }
+        if(sum > max) max = sum;
+    }
+    return max;
+};
+```
+
+```javascript
+// 动态规划
+var maxSubArray = function(nums) {
+    const len = nums.length;
+    if(len==0) return 0;
+    let dp = new Array(len);
+    let max = (dp[0] = nums[0]);
+    for(let i = 1; i < len; i++) {
+        dp[i] = Math.max(dp[i-1]+nums[i], nums[i]);   
+        max = Math.max(max, dp[i]);   
+    }
+    return max;
+};
+```
+
+```javascript
+// 在原地进行的动态规划，用nums[i]表示dp[i]
+var maxSubArray = function(nums) {
+    const len = nums.length;
+    if(len==0) return 0;
+    let max = nums[0];
+    for(let i = 1; i < len; i++) {
+        if (nums[i - 1] > 0) {
+            nums[i] += nums[i - 1];
+        }
+        max = Math.max(max, dp[i]);   
+    }
+    return max;
+};
+```
+
 ### 一、动态规划
 动态规划其实是运筹学的一种最优化方法，只不过在计算机问题上应用比较多，比如说让你求最长递增子序列呀，最小编辑距离呀等等。
-动态规划 ＝ 穷举 ＋ 剪枝
-###### 解题步骤
+动态规划 ＝ 穷举 ＋ 剪枝，一定要记住**穷举**，先找出所有的状态，再找到所有状态对应的所有选择，接着对比选出符合条件的选择，这个过程中用**dp table**存储之前的选择或**备忘录**减少递归次数。
+##### 解题步骤
  1. 建立dp数组，根据题意可以建立一维、二维甚至三维的数组，dp数组的索引值就是影响每个状态的值，比如两个字符串问题，有了字符串的改变才有了状态的改变，存储的值就是题目要求的值；背包问题中背包的体积和物体的类别限制了背包中物体的总价值和能放的总体积。
  2. 定义base case，dp数组的初始条件，方便后来迭代求解下一个值
  3. 找状态转移方程，其实我觉得这才是第一步，当读懂了题目后才能思考如何建立dp数组和base case。所谓的状态就是对不同的选择形成的状态，也就是在这里穷举所有的可能性，选出最符合题意的最大或最小值等。
+ 4. 遍历穷举，一般是几维的dp数组就有几层循环，比较所有选择的值，找出符合题意的，遍历策略也是非常需要注意的。
+##### 动态规划的时间复杂度
+- 动态规划算法的时间复杂度就是**子问题个数 × 函数本身的复杂度**。
+##### 动态规划的base case
+- Number.MAX_VALUE — JavaScript可表示的最大值，最大值为1.7976931348623157e+308
+
+- -Number.MAX_VALUE — JavaScript可表示的最小值
+
+- Number.NEGATIVE_INFINITY — 负无限接近于0，溢出时返回该值
+#### 优化方法
+- 二分查找：通过二分查找减少遍历次数，如[鸡蛋掉落问题](https://leetcode-cn.com/problems/super-egg-drop/)
+
 
 关于动态规划如何理解，为什么需要动态规划，可以看看这个大神的题解：[动态规划套路详解](https://leetcode-cn.com/problems/coin-change/solution/dong-tai-gui-hua-tao-lu-xiang-jie-by-wei-lai-bu-ke/)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200427204204372.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
 
 #### 1.两个字符串问题
 非常经典，典型的二维动态规划，大部分比较困难的字符串问题都可以用这个方法。
