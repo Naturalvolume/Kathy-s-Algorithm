@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 封装优先级队列
+function PriorityQueue() {
+    //在其中重新创建一个类：可以理解为内部类
+    function QueueElement(ele, priority) {
+        this.ele = ele;
+        this.priority = priority;
+    }
+    //封装属性
+    this.items = [];
+    //实现插入方法,优先级队列与队列仅仅是插入方法不同，其他的方法均相同
+    // 必须放到主类中定义方法，因为此方法中使用到了内部类
+    PriorityQueue.prototype.enqueue = function(ele, priority) {
+        // 1.创建存储对象
+        var queueElement = new QueueElement(ele, priority);
+        // 2.判断队列是否为空，插入元素
+        if(this.items.length == 0) {
+            this.items.push(queueElement);
+        } else {
+            // 3.设置添加标志位
+            var added = false;
+            for(var i = 0; i < this.items.length; i++) {
+                if(queueElement.priority < this.items[i].priority) {
+                    // 3.1 若添加标志位为真，则说明该元素已加入队列
+                    this.items.splice(i, 0, queueElement);
+                    added = true;
+                    break;
+                }
+            }
+            // 3.2 若添加标志位为假，则该元素未加入
+            if(!added) {
+                this.items.push(queueElement);
+            }
+        }
+    }
+    //2.从队列中删除前端元素
+    PriorityQueue.prototype.dequeue = function() {
+        return this.items.shift();
+    }
+    //3.查看前端元素
+    PriorityQueue.prototype.dequeue = function() {
+        return this.items[0];
+    }
+    //4.查看队列是否为空
+    PriorityQueue.prototype.isEmpty = function() {
+        return this.items.length == 0;
+    }
+    //5.查看队列中元素的个数
+    PriorityQueue.prototype.size = function() {
+        return this.items.length;
+    }
+    
+    //6.重写继承自 object 的 tostring方法
+    PriorityQueue.prototype.toString = function() {
+        var resultString = '';
+        for(var i = 0; i < this.items.length; i++) {
+            resultString += this.items[i].ele + '-' + this.items[i].priority + ' ';
+            return resultString;
+        }
+    }
+
+}
+    // test code
+    var pq = new PriorityQueue();
+    pq.enqueue('abc', 111);
+    console.log(pq);
+    pq.enqueue('cba', 11);
+    console.log(pq);
+    pq.enqueue('kj', 170);
+    console.log(pq);
+    pq.enqueue('ev', 1110);
+    console.log(pq);
+</script>
+</body>
+</html>

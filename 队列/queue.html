@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>queue</title>
+</head>
+<body>
+<script>
+    //1.封装队列类
+    function Queue() {
+        //属性
+        this.items = [];
+        //方法
+        //1.将元素加入到队列中
+        Queue.prototype.enqueue = function(ele) {
+            this.items.push(ele);
+        }
+        //2.从队列中删除前端元素
+        Queue.prototype.dequeue = function() {
+            return this.items.shift();
+        }
+        //3.查看前端元素
+        Queue.prototype.dequeue = function() {
+            return this.items[0];
+        }
+        //4.查看队列是否为空
+        Queue.prototype.isEmpty = function() {
+            return this.items.length == 0;
+        }
+        //5.查看队列中元素的个数
+        Queue.prototype.size = function() {
+            return this.items.length;
+        }
+        
+        //6.tostring方法
+        Queue.prototype.toString = function() {
+            var resultString = '';
+            for(var i = 0; i < this.items.length; i++) {
+                resultString += this.items[i] + ' ';
+                return resultString;
+            }
+        }
+    }
+    
+    // test code
+    var queue = new Queue();
+
+    queue.enqueue('abc');
+    queue.enqueue('cba');
+    queue.enqueue('nba');
+    queue.enqueue('mba');
+
+    alert(queue);
+    queue.dequeue();
+    alert(queue);
+
+    //面试题：击鼓传花
+    function passGame(nameList, num) {
+        //1.创建一个队列结构
+        var  queue = new Queue();
+        //2.将所有人依次加入到队列中
+        for (var i = 0; i < nameList.length; i++) {
+            queue.enqueue(nameList[i]);
+        }
+        //3.开始数数字
+        while(queue.size() > 1) {
+            //不是num的时候，重新加入到队列的末尾
+            //是num的时候，将其从队列中删除
+            //3.1num数字之前的人重新放入到队列的末尾
+            for(var i = 0; i < num - 1; i++) {
+                queue.enqueue(queue.dequeue());
+            }
+
+            //3.2 num对应的这个人，直接从队列中删除掉
+            queue.dequeue();
+        }
+            
+        //4.获取最后的人
+        alert(queue.size());
+        var endName = queue.dequeue();
+        alert(endName);
+
+        return nameList.indexOf(endName);
+    }
+        
+</script>
+</body>
+</html>

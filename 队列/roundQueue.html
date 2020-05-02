@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+var MyCircularQueue = function(k) {
+    this.queue = new Array(k);
+    this.length = 0;
+    this.head = null;
+    this.tail = null;
+    this.count = k;
+};
+MyCircularQueue.prototype.enQueue = function(value) {
+    console.log(this.queue)
+    if(this.length < this.count) {
+        // tail指到尾部了，前面还有空余
+        if(this.tail == this.count-1) {
+            this.tail = 0;
+            this.queue[this.tail] = value;
+            this.length++;
+            return true;
+        } 
+        // 队列没有数
+        if(!this.length) {
+            this.head = this.tail = 0;
+            this.queue[this.tail] = value;;    
+            this.length++;
+       
+            return true;
+        }
+        // 只要不再尾部都可以直接加
+        this.tail++;
+        this.queue[this.tail] = value;;    
+        this.length++;
+        
+        return true;
+    } else {
+        return false;
+    }
+    
+};
+MyCircularQueue.prototype.deQueue = function() {
+    if(this.isEmpty()) return false;
+    this.queue.splice(this.head, 1, null);
+    // 先让长度减一
+    this.length--;
+    // 删除完之后如果队列不为空了
+    if(this.length) {
+        // 头指针也没有走到最后
+        if(this.head != this.count-1) {
+            // 让头指针指向下一个
+            this.head++;
+        } else {
+            // 走到最后了就让头指针指向队列头
+            this.head = 0;
+        }
+    } else {
+        this.head = null;
+    }
+    console.log(this.head);
+    console.log(this.queue)
+    return true;
+};
+MyCircularQueue.prototype.Front = function() {
+    return this.isEmpty() ? -1: this.queue[this.head];
+};
+MyCircularQueue.prototype.Rear = function() {
+    return this.isEmpty() ? -1: this.queue[this.tail];
+};
+MyCircularQueue.prototype.isEmpty = function() {
+    return !this.length ? true : false;
+};
+MyCircularQueue.prototype.isFull = function() {
+    return this.length==this.count ? true : false;
+};
+</script>
+</body>
+</html>
