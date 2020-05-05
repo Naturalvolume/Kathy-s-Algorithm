@@ -1,8 +1,30 @@
 ## 一、队列的特点
 先进先出
 队列的应用
+#### 1. 一般的队列
+用链表或动态数组和指向队列头部的索引实现，队列应支持两种操作：入队和出队，具体看[队列](https://github.com/Naturalvolume/Kathy-s-Algorithm/blob/master/%E9%98%9F%E5%88%97/queue.html)
+**缺点**：使用固定大小数组时，会造成空间浪费
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200505231543828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
+当删掉队首元素后，头指针后移，有一个空位无法使用。
+**解决方法**：使用循环队列
+#### 2. 优先队列
+优先队列给每个元素增加了一个优先级属性，优先级大的元素在前面，具体实现看[优先级队列](https://github.com/Naturalvolume/Kathy-s-Algorithm/blob/master/%E9%98%9F%E5%88%97/PriorityQueue.html)
+#### 3. 循环队列
+使用固定大小的数组和两个指针指示起始位置和终止位置，重用被浪费的存储。
+- 头指针在前
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020050523185944.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
+- 头指针在后
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200505232037635.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
+
+[力扣：设计循环队列](https://leetcode-cn.com/problems/design-circular-queue/)
+
+[我的实现](https://github.com/Naturalvolume/Kathy-s-Algorithm/blob/master/%E9%98%9F%E5%88%97/roundQueue.html)
+
 ## 二、广度优先搜索（DFS）
-通常 用来找最短路径。
+#### 1. BFS的特点
+（1）每一层的节点齐头并进，像是面一样往前走，所以在某一层找到的目标就是最短路径。
+（2）BFS的空间复杂度比DFS高，对于DFS空间复杂度就是递归堆栈，最坏情况下顶多就是树的高度，也就是O(logN)；对于BFS存储每一层的所有节点，最坏情况下空间复杂度是树的最底层节点的数量N/2，即O(N)。
+
 ```javascript
 // 模板
 function BFS(root, target) {
@@ -36,9 +58,7 @@ function BFS(root, target) {
 	return false;
 }
 ```
-#### 1. BFS的特点
-（1）每一层的节点齐头并进，像是面一样往前走，所以在某一层找到的目标就是最短路径。
-（2）BFS的空间复杂度比DFS高，对于DFS空间复杂度就是递归堆栈，最坏情况下顶多就是树的高度，也就是O(logN)；对于BFS存储每一层的所有节点，最坏情况下空间复杂度是树的最底层节点的数量N/2，即O(N)。
+
 ###### [力扣200:岛屿数量](https://leetcode-cn.com/problems/number-of-islands/submissions/)
 用矩阵表示的哈西表
 ```javascript
