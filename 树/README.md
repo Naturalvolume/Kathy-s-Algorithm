@@ -2,6 +2,33 @@
 树的遍历非常重要，分为两类
 - 深度优先遍历：前序、中序、后序，遍历方法有两种，递归方法最为直观易懂，但效率不高，可用栈迭代方法提供效率，但代码复杂。
 - 广度优先遍历：中序，遍历用队列辅助
+
+递归通常有两种，一种是直接在整个函数中递归（可以直接使用函数的形参），一种是用辅助函数递归（不能直接使用形参，需要处理再调用辅助函数）
+
+```javascript
+// 函数递归
+function isTree(root) {
+	// 终止条件，一般都是判断节点是否为空
+	if(!root) return true 
+	// 否则，递归
+	return isTree(root.right) && isTree(root.left)
+}
+```
+
+```javascript
+// 辅助函数递归
+function Tree(root) {
+	// 调用辅助函数
+	return isTree(root)
+}
+function isTree(root) {
+	// 终止条件，一般都是判断节点是否为空
+	if(!root) return true 
+	// 否则，递归
+	return isTree(root.right) && isTree(root.left)
+}
+```
+
 #### 1.前序遍历
 ```javascript
 // 递归
@@ -219,13 +246,109 @@ var levelOrder = function(root) {
 ## 三、树的应用
 
 #### 1.判断二叉树是否相同
-#### 2. 树的深度
-
+[力扣：对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
 ```javascript
-// 深度
+// 递归
+function isMirror(leftroot, rightroot) {
+    // 左右子树均为空，说明相等
+    if(!leftroot && !rightroot) return true
+    // 左右子树有一个不为空，说明不相等
+    if(!leftroot) return false
+    if(!rightroot) return false
+    // 若两个节点值相同，且左子树的左子树等于右子树的右子树，左子树的右子树等于右子树的左子树
+    if(leftroot.val == rightroot.val && isMirror(leftroot.left, rightroot.right) && isMirror(leftroot.right, rightroot.left)) return true
+    else return false
+}
+var isSymmetric = function(root) {
+    if(!root) return true
+    return isMirror(root.left, root.right)
+};
+```
+很明显可以看出来迭代的原理还是递归，只不过用while和栈模拟了递归
+```javascript
+// 迭代
+var isSymmetric = function(root) {
+    if(!root) return true
+    let stack = [root.left, root.right]
+    while(stack.length) {
+        let left = stack.pop()
+        let right = stack.pop()
+        if(!left && !right) continue
+        if(!left) return false
+        if(!right) return false
+        if(left.val == right.val) {
+            stack.push(left.left)
+            stack.push(right.right)
+            stack.push(left.right)
+            stack.push(right.left)
+        } else {
+            return false
+        }
+    }
+    return true
+};
+```
+
+#### 2. 树的深度
+树的最大深度
+```javascript
+// 递归
 var maxDepth = function(root) {
     if(!root) return 0
     return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1
 };
+// 迭代也可以求，用广度优先遍历
 ```
+[树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)
+这道题一定要理解清楚题意，求的是根节点到叶子节点的最短距离，所以要判断现在到达的节点是否为叶子节点。
+```javascript
+// 第一次见到这么多的递归条件，每个节点都有五种可能情况
+var minDepth = function(root) {
+    // (1)该节点为空，不记数
+    if(!root) return 0
+    // (2)该节点的左右节点均为空，说明是叶子节点，结束递归
+    if(!root.left && !root.right) return 1
+    // (3)左节点为空，但右节点不为空
+    if(!root.left) return minDepth(root.right)+1
+    // (4)右节点为空，但左节点不为空
+    if(!root.right) return minDepth(root.left)+1
+    // (5)左右节点均不为空，返回最小深度
+    return Math.min(minDepth(root.left), minDepth(root.right)) + 1
+};
+```
+#### 回溯在树中的应用
+[力扣：路径总和II](https://leetcode-cn.com/problems/path-sum-ii/)
 
+```javascript
+var pathSum = function(root, sum) {
+    if(!root) return []
+    let res = []
+    let path = [root.val]
+    let lookpath = function(root, sum, path) {
+        // 到子节点
+        if(!root.left && !root.right) {
+            // 判断这条路是否满足条件
+            if(root.val == sum) {
+                res.push(path.slice())
+            }
+            return
+        }
+        // 剪枝条件，注意一定要考虑负数的情况
+        // if(Math.abs(root.val) >= Math.abs(sum)) return
+        // 不能剪枝，因为没说全是负数或者全是正数
+        // 还是考虑问题不全面啊！！！！答错了两次，心痛！
+        if(root.left) {
+            path.push(root.left.val)
+            lookpath(root.left, sum-root.val, path)
+            path.pop()
+        }
+        if(root.right) {
+            path.push(root.right.val)
+            lookpath(root.right, sum-root.val, path)
+            path.pop()
+        }
+    }
+    lookpath(root, sum, path)
+    return res
+};
+```
