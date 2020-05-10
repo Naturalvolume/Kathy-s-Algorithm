@@ -1,3 +1,24 @@
+## 一、二叉树
+二叉树是每个结点至多只有两棵子树（度小于等于2）的树，且二叉树的子树有左右之分，次序不能颠倒。
+
+> 二叉树和度为2的树区别：度为2的树至少有三个节点，而二叉树可以为空
+
+#### 1.满二叉树
+满二叉树的每一层都含有最多的结点，且除了叶子结点之外的每个结点度数均为2，对满二叉树编号如下，根据这些号可以求出每一层的最大宽度等信息。
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200510160313650.png)
+#### 2.完全二叉树
+当有n个结点的二叉树每个结点都与满二叉树的编号为1~n的结点一一对应时，就是完全二叉树
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200510160329391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200510160935379.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
+看出满二叉树和完全二叉树的区别了吗？其实完全二叉树就是叶子结点未填满的满二叉树。
+#### 3.二叉树的存储结构
+- 顺序存储结构
+
+按照满二叉树的编号将二叉树每个节点`i`存储在数组对应下标为`i-1`的位置上，一般二叉树也这样存，即使有空余，因此顺序存储多用于完全二叉树中
+- 链式存储结构
+
+用链表表示元素的逻辑关系，一个数据域和两个指针域，分别指向左孩子和右孩子
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200510161059179.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
 ## 二、树的遍历
 树的遍历非常重要，分为两类
 - 深度优先遍历：前序、中序、后序，遍历方法有两种，递归方法最为直观易懂，但效率不高，可用栈迭代方法提供效率，但代码复杂。
@@ -246,6 +267,9 @@ var levelOrder = function(root) {
 ## 三、树的应用
 
 #### 1.判断二叉树是否相同
+
+
+ijk
 [力扣：对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
 ```javascript
 // 递归
@@ -316,7 +340,7 @@ var minDepth = function(root) {
     return Math.min(minDepth(root.left), minDepth(root.right)) + 1
 };
 ```
-#### 回溯在树中的应用
+#### 3.回溯在树中的应用
 [力扣：路径总和II](https://leetcode-cn.com/problems/path-sum-ii/)
 
 ```javascript
@@ -350,5 +374,37 @@ var pathSum = function(root, sum) {
     }
     lookpath(root, sum, path)
     return res
+};
+```
+#### 4.满二叉树的应用
+根据满二叉树的层序序号
+[力扣：二叉树的最大宽度](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/)
+
+```javascript
+var widthOfBinaryTree = function(root) {
+    if(!root) return 0
+    let queue = [root]
+    let idx = [1]
+    // 根节点所在的第一层宽度肯定是1
+    let max = 1
+    while(queue.length) {
+        const size = queue.length
+
+        for(let i = 0; i < size; i++) {
+            let node = queue.shift()
+            let id = idx.shift()
+            if(node.left) {
+                queue.push(node.left)
+                idx.push(2*id)
+            }
+            if(node.right) {
+                queue.push(node.right)
+                idx.push(2*id+1)
+            }
+        }
+        // 只有一个值活着没有值不用考虑
+        if(idx.length > 1) max = Math.max(max, idx[idx.length-1] - idx[0] + 1)
+    }
+    return max
 };
 ```
