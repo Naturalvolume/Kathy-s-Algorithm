@@ -19,6 +19,13 @@
 
 用链表表示元素的逻辑关系，一个数据域和两个指针域，分别指向左孩子和右孩子
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200510161059179.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
+### 4.二叉搜索树
+二叉搜索树，也叫二叉排序树、二叉查找树，或BST，其特点为：
+- 若左子树非空，则左子树上所有结点值均小于根结点
+- 若右子树非空，则右子树上所有结点值均大于根结点
+- 左、右子树本身也是二叉搜索树
+
+二叉搜索树的最重要性质为：**中序遍历序列是递增的**，利用这一个性质可以做许多有趣的事情。
 # 二、树的遍历
 树的遍历非常重要，分为两类
 - 深度优先遍历：前序、中序、后序，遍历方法有两种，递归方法最为直观易懂，但效率不高，可用栈迭代方法提供效率，但代码复杂。
@@ -99,7 +106,7 @@ var inorderTraversal = function(root) {
     return res
 };
 ```
-迭代的方法有很多，这一种是标记访问过节点的
+迭代的方法有很多，这一种是标记访问过节点的，依次加入左节点到栈中，直到没有左节点，再依次弹出左节点加入右节点。
 ```javascript
 // 迭代
 var inorderTraversal = function(root) {
@@ -175,7 +182,7 @@ var postorderTraversal = function(root) {
     return res
 };
 ```
-树的后序后序迭代最难想，用层序遍历和栈实现
+树的后序后序迭代最难想，用层序遍历和栈实现，注意最后要反转数组
 ```javascript
 // 迭代
 var postorderTraversal = function(root) {
@@ -374,8 +381,7 @@ var pathSum = function(root, sum) {
 };
 ```
 ### 4.满二叉树的应用
-根据满二叉树的层序序号
-[力扣：二叉树的最大宽度](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/)
+根据满二叉树的层序序号，	求[力扣：二叉树的最大宽度](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/)
 
 ```javascript
 var widthOfBinaryTree = function(root) {
@@ -415,6 +421,76 @@ var widthOfBinaryTree = function(root) {
 - 先序和中序
 - 后序和中序
 - 层序和中序
-- 其它的组合都是不可以
+- 先序和后序
 
-注意：这类题目都要`if(!root) return null`，因为返回类型是树
+注意：这类题目都要`if(!root) return null`，因为返回类型是树的节点
+**[力扣：从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)**
+
+```javascript
+var buildTree = function(preorder, inorder) {
+    if(!preorder.length) return null
+    let root = new TreeNode(preorder[0])
+    if(preorder.length==1) return root
+    // 因为树中没有重复的元素，如果有了就不能用这种方法分割中序序列了
+    let mid = inorder.indexOf(preorder[0])
+           
+    root.left = buildTree(preorder.slice(1,mid+1),inorder.slice(0,mid))
+    root.right = buildTree(preorder.slice(mid+1),inorder.slice(mid + 1))
+    return root
+};
+```
+[力扣：从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+[力扣：根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+### 6.二叉搜索树
+[力扣：将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)
+
+```javascript
+var sortedArrayToBST = function(nums) {
+    const len = nums.length   
+    if(!len) return null
+    const r = Math.floor(len/2) 
+    let root = new TreeNode(nums[r]) 
+    root.left = sortedArrayToBST(nums.slice(0, r))
+    root.right = sortedArrayToBST(nums.slice(r+1, len))
+    return root
+};
+```
+[力扣：验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+根据性质二叉搜索树的中序序列是递增序列，在二叉树中序遍历的代码中加一个判断即可。
+
+```javascript
+var isValidBST = function(root) {
+    let stack = [];
+    // js中最小值的表示方法
+    let inorder = -Infinity;
+    let res = []
+
+    while (stack.length || root !== null) {
+        while (root !== null) {
+            stack.push(root);
+            root = root.left;
+        }
+        root = stack.pop();
+        res.push(root.val)
+        // 如果中序遍历得到的节点的值小于等于前一个 inorder，说明不是二叉搜索树
+        if (root.val <= inorder) return false;
+        inorder = root.val;
+        root = root.right;
+    }
+    return true;
+};
+```
+### 7.二叉树的祖先
+[二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+```javascript
+var lowestCommonAncestor = function(root, p, q) {
+    if(!root || root==p || root==q) return root
+    let left = lowestCommonAncestor(root.left, p, q)
+    let right = lowestCommonAncestor(root.right, p, q)
+    if(left && right) return root
+    if(!left && !right) return
+    if(!left) return right
+    if(!right) return left
+};
+```
