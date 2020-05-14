@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    
+</head>
+<body>
+<script>
+
+// 封装的字典类型，用于存储边
+function Dictionary() {
+    this.items = {};   
+}
+Dictionary.prototype.set = function(key, value) {
+    this.items[key] = value;
+}
+Dictionary.prototype.has = function(key) {
+    return this.items.hasOwnProperty(key);
+}
+Dictionary.prototype.remove = function(key) {
+    if(!this.has(key)) return false
+    delete this.items[key];
+    return true;
+}
+// 获取key值对应的value
+Dictionary.prototype.get = function(key) {
+    return this.has(key) ? this.items[key] : undefined;
+}
+// 获取所有的key值
+Dictionary.prototype.keys = function() {
+    return Object.keys(this.items);
+}
+// 获取所有的values值
+Dictionary.prototype.values = function() {
+    return Object.values(this.items);
+}
+
+//封装队列类，用于在图的遍历中
+    function Queue() {
+        //属性
+        this.items = [];
+        //方法
+        //1.将元素加入到队列中
+        Queue.prototype.enqueue = function(ele) {
+            this.items.push(ele);
+        }
+        //2.从队列中删除前端元素
+        Queue.prototype.dequeue = function() {
+            return this.items.shift();
+        }
+        //3.查看前端元素
+        Queue.prototype.watch = function() {
+            return this.items[0];
+        }
+        //4.查看队列是否为空
+        Queue.prototype.isEmpty = function() {
+            return this.items.length == 0;
+        }
+        //5.查看队列中元素的个数
+        Queue.prototype.size = function() {
+            return this.items.length;
+        }
+        
+        //6.tostring方法
+        Queue.prototype.toString = function() {
+            var resultString = '';
+            for(var i = 0; i < this.items.length; i++) {
+                resultString += this.items[i] + ' ';
+                return resultString;
+            }
+        }
+    }
+
+
+// 封装图类，用邻接表表示法
+function Graph() {
+    //顶点的集合直接用数组表示
+    this.vertexes = [];
+    //点的集合因为要表示每个点对应的边，因此可以使用js原生的对象，或者使用字典结构
+    //在这里使用封装好的字典结构
+    this.edges = new Dictionary();
+
+    //1.添加方法
+    //（1）添加顶点
+    Graph.prototype.addVert = function(v) {
+        
+        for(var i = 0; i < v.length; i++) {
+            //添加顶点
+            this.vertexes.push(v[i]);
+            //设置每个顶点对应的边数组为空
+            this.edges.set(v[i], []);
+        }
+    }
+    //（2）添加边
+    Graph.prototype.addEdge = function(v1, v2) {
+        // 添加有向图，只需一个操作即可
+        // 下面的这个代码是不正确的，因为现在的edges是已经封装好的，不是纯粹的对象结构
+        // this.edges[v1].push(v2);
+        this.edges.get(v1).push(v2);
+        // 添加无向图
+        this.edges.get(v2).push(v1);
+    }
+    // 2.string方法
+    Graph.prototype.toString = function() {
+        var result = "";
+        for(var i = 0; i < this.vertexes.length; i++) {
+            var e = this.edges.get(this.vertexes[i]);
+            result += this.vertexes[i] + "->";
+            for(var j = 0; j < e.length; j++) {
+                result += e[j] +  " ";
+            }
+            result += "\n";
+        }
+        return result;
+    }
+    // 3.初始化颜色状态，在图的两种遍历方式中，使用颜色来记录每个顶点的状态
+    Graph.prototype.initialize = function() {
+        // 在js中数组的下标值可以随意设置吗？？？我怎么觉得应该用对象
+        var colors = [];
+        for(var i = 0; i < this.vertexes.length; i++) {
+            colors[this.vertexes[i]] = 'white';
+        }
+        // 返回颜色数组，方便后面的函数使用
+        return colors;
+    }
+    //4.两种图的遍历方法
+    // （1）广度优先算法,传入参数initv是要处理的第一个顶点，handler是用来处理每个顶点
+    Graph.prototype.bfs = function(initv, handler) {
+        //1.初始化颜色
+        colors = this.initialize();
+        //2.创建队列
+        var queue = new Queue();
+        //3.将第一个顶点加入到队列中
+        queue.enqueue(initv);
+        //4.循环从队列中取出元素
+        while(!queue.isEmpty()) {
+            //4.1取出每次队列中的第一个元素
+            var v = queue.dequeue();
+            //4.2获取和顶点相连的另外顶点
+            var vlist = this.edges.get(v);
+            //4.3将v标记为灰色
+            colors[v] = "gray";
+            //4.4循环标记所有的顶点
+            for(var i = 0; i < vlist.length; i++) {
+                if(colors[vlist[i]] == "white") {
+                    colors[vlist[i]] = "gray";
+                    // 将每次探索到的元素压入队列，方便继续探索该队列下面的元素
+                    queue.enqueue(vlist[i]);
+                }
+            }
+            //4.5访问顶点
+            handler(v);
+            //4.6设置顶点为黑色
+            colors[v] = "black";
+        }
+    }
+    //(2)深度优先遍历，使用递归的方法实现
+    Graph.prototype.dfs = function(initv, handler) {
+        //1.初始化颜色
+        var colors = this.initialize();
+        //2.调用递归函数遍历图
+        this.dfsI(initv, colors, handler);
+    }
+    //dfs
+    Graph.prototype.dfsI = function(v, colors, handler) {
+        //1.将颜色设置为灰色，表示访问过
+        colors[v] = "gray";
+        //2.处理v，输出打印
+        handler(v);
+        //3.访问v相连的顶点
+        var vlist = this.edges.get(v);
+        for(var i = 0; i < vlist.length; i++) {
+            //如果该点为白色，说明其没有被访问及探索过
+            if(colors[vlist[i]] == "white") {
+                //访问该点周围的点
+                this.dfsI(vlist[i], colors, handler);
+            }
+        }
+        //将访问且探索过的点设置为黑色
+        colors[v] = "black";
+    }
+}
+
+// test code
+var v = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+var graph = new Graph();
+graph.addVert(v);
+console.log(graph);
+graph.addEdge('A', 'B');
+graph.addEdge('A', 'C');
+graph.addEdge('A', 'D');
+graph.addEdge('C', 'D');
+graph.addEdge('C', 'G');
+graph.addEdge('D', 'G');
+graph.addEdge('D', 'H');
+graph.addEdge('B', 'E');
+graph.addEdge('B', 'F');
+graph.addEdge('E', 'I');
+console.log(graph);
+console.log(graph.toString());
+
+//广度优先搜索的辅助函数，拼接顶点
+var resultString = "";
+//传入两个参数，一个为遍历的第一个顶点，一个为顶点拼接字符串
+graph.bfs(graph.vertexes[0], function(v) {
+    resultString += v;
+})
+console.log(resultString);
+
+var resultString = "";
+//传入两个参数，一个为遍历的第一个顶点，一个为顶点拼接字符串
+graph.dfs(graph.vertexes[0], function(v) {
+    resultString += v;
+})
+console.log(resultString);
+</script>
+</body>
+</html>
