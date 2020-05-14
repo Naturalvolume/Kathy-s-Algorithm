@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+function Sort() {
+    //
+    
+    
+}
+// 辅助函数，交换数组中两个元素的位置
+Sort.prototype.change = function(array, i, j) {
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+}
+// 冒泡排序
+Sort.prototype.ballSort = function(array) {
+    for(var j = array.length - 1; j > 0; j--) {
+        for(var i = 0; i < j; i++) {
+            if(array[i] > array[i+1]) {
+                this.change(array, i, j);
+            }
+        }
+    } 
+}
+// 选择排序
+Sort.prototype.selectSort = function(array) {
+    for(var i = 0; i < array.length - 1; i++) {
+        var min = i;
+        for(var j = i + 1; j < array.length; j++) {    
+            if(array[j] < array[min]) {
+                min = j;
+            }
+        }
+        this.change(array, i, min);
+    }
+    console.log(array);
+}
+// 插入排序
+Sort.prototype.insertSort = function(array) {
+    for(var i = 1; i < array.length - 1; i++) { //左边数字是排好序的，右边数字是未排好序的
+        var temp = array[i];    //1.单独将要排序的数取出，放入临时变量中
+        for(var j = i; j < 0; j--) {
+            if(temp < array[j-1]) {     //2.1 若临时变量小于前面的元素，将这个元素放入其后面的一个位置
+                // 在比较的过程中移动大元素的位置，不需要进行数字交换
+                array[j] = array[j-1];
+            } else {
+                //2.2 若临时变量大于等于前面的元素，将临时变量放入空位中
+                array[j] = temp;
+            }
+        }
+    }
+    console.log(array);
+}
+// test code
+var a = [5, 3, 9, 10, 1];
+var s = new Sort();
+s.ballSort(a);
+s.selectSort(a);
+s.insertSort(a);
+</script>
+</body>
+</html>
