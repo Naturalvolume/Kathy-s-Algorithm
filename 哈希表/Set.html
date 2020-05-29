@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    //封装集合类
+    //通过对象实现集合
+    function Set() {
+        //属性，不用数组封装集合，是因为数组允许重复，不符合我们的要求
+        //使用object对象，因为object对象是由key和value组成的，key的集合本来就是一个集合类
+        this.items = {};
+
+        //1. add方法
+        Set.prototype.add = function(value) {
+            //1.判断当前集合中是否已经包含了该元素
+            if(this.has(value)) {
+                return false;
+            }
+            //2.将元素添加到集合中，用value当做下标值，与存入的值相等
+            this.items[value] = value;
+            return true;
+        }
+        //2.判断当前对象是否包含这个值
+        Set.prototype.has = function(value) {
+            // js原生就有判断object对象中是否有重复
+            return this.items.hasOwnProperty(value);
+
+        }
+        //3.删除元素
+        Set.prototype.remove = function(value) {
+            //1.判断该集合中是否包含该元素
+            if(!this.has(value)) {
+                return false;
+            }
+            //2.将元素从属性中删除，使用js原生的delete方法
+            delete this.items[value];
+            return true;
+        }
+        //4.清除集合
+        Set.prototype.clear = function() {
+            // 直接将集合赋值一个空对象，原来的对象，由于没有引用指向它，将自动回收
+            this.items = {};
+        }
+        //5.集合长度
+        Set.prototype.size = function() {
+            // 使用js object对象原生的keys方法，将集合中的所有键值的长度返回
+            return Object.keys(this.items).length;
+        }
+        //6.获取集合中所有的值
+        Set.prototype.values = function() {
+            return Object.keys(this.items);
+        }
+
+        // 以上几个方法的实现不考虑兼容性问题，因为主要是了解集合的特征，没有考虑过多的js性质
+
+        // 集合间的操作
+        // 1.并集
+        Set.prototype.union = function(otherSet) {
+            // this:集合对象a
+            // otherSet：集合对象b
+            //1.创建新的集合
+            var unionSet = new Set();
+            //2.将集合a中的所有元素添加到新集合中
+            var values = this.values();
+            for(var i = 0; i < values.length; i++) {
+                unionSet.add(values[i]);
+            }
+            //3.取出集合b中的元素，判断是否要加入到新集合中
+            values = otherSet.values();
+            for(var i = 0; i < values.length; i++) {
+                unionSet.add(values[i]);
+            }
+            //4.返回并集
+            return unionSet;
+        }
+
+        //2.交集
+        Set.prototype.interSection = function(otherSet) {
+            // this:
+            // otherSet
+            //1.
+            var interSectionSet = new Set();
+            //2.
+            var values = this.values();
+            for(var i = 0; i < values.length; i++) {
+                if(otherSet.has(values[i])) {
+                    interSectionSet.add(values[i]);
+                }
+            }
+            return interSectionSet;
+        }
+        //3.差集
+        Set.prototype.difference = function(otherSet) {
+            //
+            //
+            //1.
+            var differenceSet = new Set();
+            //2.
+            var values = this.values();
+            for(var i = 0; i < values.length; i++) {
+                if(!otherSet.has(values[i])) {
+                    differenceSet.add(values[i]);
+                }
+            }
+            return differenceSet;
+        }
+        //4.子集,otherset是父集
+        Set.prototype.subSet = function(otherSet) {
+            //1.遍历集合a中所有元素，如果发现，集合a中的元素，在集合b中不存在，那么false
+            //如果遍历完了整个集合，依然没有返回false，那么返回true即可
+            var values = this.values();
+            for(var i = 0; i < values.length; i++) {
+                if(!otherSet.has(values[i])) {
+                    return false;
+                }
+            }
+            return true;
+
+        }
+    }
+
+    // test code
+    var set = new Set();
+    console.log(set.add('abc'));
+    console.log(set.add('def'));
+    console.log(set.add('ghij'));
+    console.log(set.add('klmn'));
+    console.log(set.values());
+    console.log(set.size());
+    console.log(set.has('def'));
+    console.log(set.remove('def'));
+    console.log(set.values());
+    //set.clear();
+    //console.log(set.size());
+
+    var otherSet = new Set();
+    otherSet.add('klmn');
+    otherSet.add('opq');
+    otherSet.add('rst');
+    unionSet = set.union(otherSet);
+    console.log(unionSet.values());
+    interSectionSet = set.interSection(otherSet);
+    console.log(interSectionSet.values());
+    differenceSet = set.difference(otherSet);
+    console.log(differenceSet);
+    console.log(set.subSet(otherSet));
+</script>
+</body>
+</html>

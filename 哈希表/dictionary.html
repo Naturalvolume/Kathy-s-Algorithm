@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//字典中的key键值是不能重复的，而value可以重复，并且字典中的key是无序的。
+//在js中，似乎对象本身就是一种字典，所以在早起的js中，没有字典这种数据类型，因为完全可以使用对象来代替。
+//在一些编程语言中，将字典这种映射关系成为map
+//字典与集合的实现非常相似，看作者的博客吧
+function Dictionary() {
+    this.items = {};
+    
+}
+Dictionary.prototype.set = function(key, value) {
+    this.items[key] = value;
+}
+Dictionary.prototype.has = function(key) {
+    return this.items.hasOwnProperty(key);
+}
+Dictionary.prototype.remove = function(key) {
+    if(!this.has(key)) return false
+    delete this.items[key];
+    return true;
+}
+Dictionary.prototype.toString = function() {
+
+}
+// 获取key值对应的value
+Dictionary.prototype.get = function(key) {
+    return this.has(key) ? this.items[key] : undefined;
+}
+// 获取所有的key值
+Dictionary.prototype.keys = function() {
+    return Object.keys(this.items);
+}
+Dictionary.prototype.values = function() {
+    return Object.values(this.items);
+}
+
+// test code
+var dic = new Dictionary();
+dic.set(1, "abc");
+dic.set(2, "def");
+dic.set(3, "ghij");
+dic.set(4, "klmn");
+
+console.log(dic.keys());
+console.log(dic.values());
+
+dic.remove(2);
+console.log(dic.keys());
+console.log(dic.values());
+console.log(dic.has(2));
+console.log(dic.has(4));
+console.log(dic.get(4));
+
+</script>
+</body>
+</html>

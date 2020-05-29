@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//1.数组在进行插入－查找－删除时，
+//如果是基于下标指进行操作时效率很高，若是基于内容操作，则效率很低，需要按元素逐个操作
+//2.哈西表时基于数组快速实现的，它可以非常快速的进行操作，无论多少数据，插入和删除值都需要接近常量的时间
+//哈西表比树还要快，几乎可以瞬间找到想要的元素
+//哈西表相对于树来说编码要容易很多
+//3.哈西表的不足：数据没有顺序，不能以固定方式遍历所有元素，且key值不能重复
+//因此，集合和字典通常都用哈西表实现
+
+//哈西表就是使用哈西函数，将字符转换为数字，即哈西函数就是一种字符编码，类似于ascii码一样
+//哈西函数：
+//编码系统：自己设计一个编码系统，比如a是1，b是2，c是3，依次类推，用0代替空格，共27字符
+//单词转换：1.数字相加：将单词的每个字符编码求和，如 cats 就是3+1+20+19 ＝ 43，但是会有很多单词的编码一样
+//2.幂的连乘：数字过大，导致内存浪费
+//哈西化：将大数字转化成数组范围内下标的过程
+//哈西函数：将单词专程大数字，大数字进行哈西化的实现放在一个函数中，这个函数称为哈西函数
+//哈西表：将数据插入到数组中，对整个结构封装，将其称为哈西表
+//冲突：两个单词经过哈西化后的值相同
+//解决冲突方法：锁地址法（拉链法）、开放地址法（面试中常问）
+
+
+// 设计哈西函数
+//(1)将字符串转成比较大的数字：hashcode
+//(2)将大的数字hashcode压缩到数组范围（大小）之内
+function hashFunc(str, size) {
+    //1.定义变量
+    var hashCode = 0;
+    //2.霍纳算法，即秦九韶算法
+    //cats -> unicode编码，选择自带的unicode编码
+    //选择以质数为底，一般都选择37
+    for(var i = 0; i < str.length; i++) {
+        hashCode = 37 * hashCode + str.charCodeAt(i);
+    }
+    //3.取余操作
+    var index = hashCode % size;
+    return index;
+}
+
+//封装哈西表类
+function HashTable() {
+    //定义属性
+    //(1)storage作为数组，存放相关元素
+    this.storage = [];
+    //(2)count表示当前已经存在多少数据
+    this.count = 0;
+    //(3)limit用于标记数组中一共可以存放多少个元素
+    this.limit = 8;
+
+    //方法
+    HashTable.prototype.get = function(key) {
+        return hashFunc(key, this.limit);
+    }
+    //1.插入／修改操作
+    HashTable.prototype.input = function(key, value) {
+                //1.根据key获取索引值index，从而将数据插入到对应的位置
+        var index = hashFunc(key, this.limit);
+        //2.根据索引值取出bucket
+        var bucket = this.storage[index];
+
+        //3.进行添加或修改操作
+            //3.1 判断该bucket是否为未添加过
+        // 没被赋值过的数组为 undefined，undefined == null
+        // 所以这个判断条件也可以为 bucket == null
+        if(bucket == null) {
+            bucket = [];
+            this.storage[index] = bucket;
+        }
+            //3.2找到需修改数据
+        for(var i = 0; i < bucket.length; i++) {
+            var tuple = bucket[i];
+            if(tuple[0] == key) {
+                tuple[1] = value;
+                // 执行完毕，退出函数
+                return;
+            }
+        }
+        //5.进行添加操作
+        bucket.push([key, value]);
+        this.count += 1;
+
+        //6.判断是否需要进行扩容操作
+        if(this.count > this.limit * 0.75) {
+            var newsize = this.getprime(this.limit * 2)
+            this.resize(newsize);
+        }
+    }
+
+    //2.获取元素操作
+    HashTable.prototype.acquire = function(key) {
+        //1.通过哈西函数获取index
+        var index = hashFunc(key, this.limit);
+        //2.获取索引对应的bucket
+        var bucket = this.storage[index];
+        //3.若索引对应的bucket为空，说明没有这个key值，即没有这个元素，返回空
+        if(bucket == null) {
+            return null;
+        }
+        //4.若有bucket值，检索bucket中是否有对应的元素
+        for(var i = 0; i < bucket.length; i++) {
+            var tuple = bucket[i];
+            if(tuple[0] == key) {
+                return tuple[1];
+            }
+        }
+        //5.若没有找到对应的元素，则返回空
+        return null;
+    }
+    //3.删除元素
+    HashTable.prototype.remove = function(key) {
+        //1.通过哈西函数获取index
+        var index = hashFunc(key, this.limit);
+        //2.获取索引对应的bucket
+        var bucket = this.storage[index];
+        //3.若索引对应的bucket为空，说明没有这个key值，即没有这个元素，返回空
+        if(bucket == null) {
+            return null;
+        }
+        //4.若有bucket值，检索bucket中是否有对应的元素
+        for(var i = 0; i < bucket.length; i++) {
+            var tuple = bucket[i];
+            if(tuple[0] == key) {
+                //使用js原生方法，删掉i位置上的1个元素
+                bucket.splice(i, 1);
+                this.count--;
+                return tuple[1];
+
+                // 删除元素后，判断剩余的元素是否过少，从而进行缩小容量
+                if(thi.limit > 7 && this.count < this.limit * 0.25) {
+                    var newsize = this.getprime(Math.floor(this.limit / 2))
+                    this.resize(newsize);
+                }
+            }
+        }
+        //5.若没有找到对应的元素，则返回空
+        return null;
+    }
+    //4.判断哈西表为空
+    HashTable.prototype.isEmpty = function() {
+        return this.count = 0;
+    }
+    //5.返回哈西表长度
+    HashTable.prototype.size = function() {
+        return this.count;
+    }
+
+    //哈西表的高级操作
+    //1.哈西表的扩容 或 缩小容量
+    HashTable.prototype.resize = function(newlimeit) {
+        //1.保存旧数组的内容
+        var oldstorage = this.storage;
+        //2.重置所有的属性
+        this.storage = [];
+        this.count = 0;
+        this.limit = newlimeit
+        //3.遍历oldstorage中的所有bucket
+        for(var i = 0; i < oldstorage.length; i++) {
+            //3.1取出对应的bucket
+            var bucket = oldstorage[i];
+            //3.2判断bucket是否为null
+            if(bucket == null) {
+                contine;
+            }
+            //3.3bucket中有数据，那么取出数据，重新插入
+            for(var j = 0; j < bucket.length; j++) {
+                var tuple = bucket[j];
+                this.input(tuple[0], tuple[1]);
+                this.count++;
+            }
+        }
+    }
+
+    //2.确保扩容时一直是质数
+    HashTable.prototype.getprime = function(num) {
+        while(!isprime(num)) {
+            num++;
+        }
+        return num;
+    }
+  
+
+
+}
+
+    // 面试题：判断一个数字是否为质数
+    // 1.判断数字除以 2 - num-1 是否有余数
+    //2.利用因数一大一小来解决
+    function isprime(num) {
+        //1.获取num的平方根
+        var temp = parseInt(Math.sqrt(num))
+        //2.
+        for(var i = 2; i <= temp; i++) {
+            if(num % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+// test code
+var hash = new HashTable();
+
+
+hash.input("abc", 100);
+hash.input("def", 200);
+hash.input("ghik", 300);
+console.log(hash.acquire("abc"));
+
+console.log(hash.acquire("def"));
+hash.input("abc", 111);
+console.log(hash.acquire("abc"));
+console.log(hash);
+console.log(hash.get("abc"));
+</script>
+</body>
+</html>
