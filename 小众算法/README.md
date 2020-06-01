@@ -103,4 +103,52 @@ var romanToInt = function(s) {
     return ans;
 };
 ```
+## 4. 位操作
+最常见的位操作就是用`n&(n-1)`消去数字n二进制表示中的最后一个1
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200601115416959.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
+[力扣：位1的个数](https://leetcode-cn.com/problems/number-of-1-bits/)
+
+```c
+var hammingWeight = function(n) {
+    // 利用 n & (n-1) 可以消除n的最后一个1
+    // 循环消去 n 的1，计数
+    // 当n=0时，就统计完成
+    let res = 0
+    while(n!=0) {
+        n = n & (n-1)
+        res++
+    }
+    return res
+};
+```
+[力扣：汉明距离](https://leetcode-cn.com/problems/hamming-distance/)
+利用异或和`n&n-1`计算1的个数
+```c
+var hammingDistance = function(x, y) {
+    // 异或 当二进制位上不一样时为 1，一样时为0
+    // 所以得到的n就是x，y二进制不同的1
+    let n = x ^ y
+    // 用第一题的求位1的个数方法计算
+    let res = 0
+    while(n != 0) {
+        n = n & (n-1)
+        res++
+    }
+    return res
+};
+```
+
+[力扣：2的幂次方](https://leetcode-cn.com/problems/power-of-two/)
+
+```c
+var isPowerOfTwo = function(n) {
+    if(n == 0) 
+        return false;
+    // 2的几次方都表示为 000100 等等，只有一个1
+    var p = n & (n - 1);
+
+   return (n > 0) && (p == 0);   
+};
+```
+
 
