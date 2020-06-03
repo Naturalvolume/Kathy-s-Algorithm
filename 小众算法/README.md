@@ -104,7 +104,7 @@ var romanToInt = function(s) {
 };
 ```
 ## 4. 位操作
-最常见的位操作就是用`n&(n-1)`消去数字n二进制表示中的最后一个1
+### (1)最常见的位操作就是用`n&(n-1)`消去数字n二进制表示中的最后一个1
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200601115416959.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70)
 [力扣：位1的个数](https://leetcode-cn.com/problems/number-of-1-bits/)
 
@@ -150,5 +150,45 @@ var isPowerOfTwo = function(n) {
    return (n > 0) && (p == 0);   
 };
 ```
+### (2) 异或相当于无进位加法，与运算获得进位（左移1）
+[力扣：两整数之和](https://leetcode-cn.com/problems/sum-of-two-integers/)
 
+使用异或、与运算、位移运算实现不用加号的加法
 
+```javascript
+// 异或无进位加法
+a = 5 = 0101
+b = 4 = 0100
+
+a ^ b 如下：
+
+0 1 0 1
+0 1 0 0
+-------
+0 0 0 1
+```
+
+```javascript
+// 与运算得到进位，但此时的进位位置需要左移一下
+a = 5 = 0101
+b = 4 = 0100
+
+a & b 如下：
+
+0 1 0 1
+0 1 0 0
+-------
+0 1 0 0
+```
+
+```javascript
+var getSum = function(a, b) {
+    let res = a ^ b
+    // 注意！要给与运算加括号后再进行左移操作
+    let add = (a & b) << 1
+    // 只要还有进位就递归
+    return add ? getSum(res, add) : res
+};
+```
+### (3)对一个数进行两次完全相同的异或运算会得到原来的数
+[力扣：缺失数字](https://leetcode-cn.com/problems/missing-number/)
