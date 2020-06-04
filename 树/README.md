@@ -494,3 +494,28 @@ var lowestCommonAncestor = function(root, p, q) {
     if(!right) return left
 };
 ```
+### 8. 完全二叉树
+[力扣：完全二叉树的节点个数](https://leetcode-cn.com/problems/count-complete-tree-nodes/)，结合遍历普通二叉树的个数和完全二叉树的个数性质。
+
+```javascript
+var countNodes = function(root) {
+    let left = right = root
+    let hl = hr = 0
+    // 左右两边都往最旁边去，因为完全二叉树的性质
+    while(left) {
+        hl++
+        left = left.left
+    }
+    while(right) {
+        hr++
+        right = right.right
+    }
+    // 左右子树高度相等，就是满二叉树，直接返回满二叉树的个数
+    if(hl == hr) {
+        return Math.pow(2, hl) - 1
+    }
+    // 不相等，不是满二叉树，加1，遍历左右两遍
+    // 总会遇到某一边为满二叉树
+    return 1 + countNodes(root.left) + countNodes(root.right)
+};
+```
