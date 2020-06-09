@@ -70,6 +70,7 @@ var dailyTemperatures = function(T) {
     return list;
 };
 ```
+递减栈也叫单调栈，这个大神把单调栈讲解的非常清晰：[单调栈](https://labuladong.gitbook.io/algo/shu-ju-jie-gou-xi-lie/dan-tiao-zhan)
 #### 2.深度优先遍历（DFS）
 - 使用递归，虽然没有直接使用栈，但实际上使用但是由系统提供的隐式栈，也称为调用栈（Call Stack）。
 
