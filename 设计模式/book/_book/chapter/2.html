@@ -1,0 +1,415 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>建造者模式 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="3.html" />
+    
+    
+    <link rel="prev" href="1.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    面向对象
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="1.html">
+            
+                <a href="1.html">
+            
+                    
+                    工厂模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3" data-path="2.html">
+            
+                <a href="2.html">
+            
+                    
+                    建造者模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="3.html">
+            
+                <a href="3.html">
+            
+                    
+                    单例模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="4.html">
+            
+                <a href="4.html">
+            
+                    
+                    装饰器模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="5.html">
+            
+                <a href="5.html">
+            
+                    
+                    组合模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="6.html">
+            
+                <a href="6.html">
+            
+                    
+                    观察者模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="7.html">
+            
+                <a href="7.html">
+            
+                    
+                    策略模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="8.html">
+            
+                <a href="8.html">
+            
+                    
+                    链模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >建造者模式</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="&#x5EFA;&#x9020;&#x8005;&#x6A21;&#x5F0F;">&#x5EFA;&#x9020;&#x8005;&#x6A21;&#x5F0F;</h2>
+<p><strong>&#x6982;&#x5FF5;</strong>&#xFF1A;&#x5EFA;&#x9020;&#x8005;&#x6A21;&#x5F0F;&#x662F;&#x628A;&#x590D;&#x6742;&#x5BF9;&#x8C61;&#x7684;&#x6784;&#x9020;&#x548C;&#x8868;&#x793A;&#x5206;&#x79BB;&#xFF0C;&#x5728;&#x5BF9;&#x8C61;&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;&#x4E2D;&#x53EA;&#x5199;&#x5C5E;&#x6027;&#xFF0C;&#x548C;&#x5C5E;&#x6027;&#x83B7;&#x5F97;&#x5177;&#x4F53;&#x503C;&#x7684;&#x7C7B;&#x65B9;&#x6CD5;&#xFF0C;&#x628A;&#x539F;&#x6765;&#x81C3;&#x80BF;&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;&#x5206;&#x6210;&#x591A;&#x4E2A;&#x5C0F;&#x7C7B;&#x3002;
+<strong>&#x5B9E;&#x73B0;</strong>&#xFF1A;&#x628A;&#x590D;&#x6742;&#x7684;&#x65B9;&#x6CD5;&#x5C01;&#x88C5;&#x6210;&#x5B50;&#x7C7B;</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// &#x4E3B;&#x7C7B;</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Candidate</span>(<span class="hljs-params">parm</span>) </span>{
+  <span class="hljs-comment">// &#x521B;&#x5EFA;&#x5BF9;&#x8C61;&#xFF0C;&#x4F5C;&#x4E3A;&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x8FD4;&#x56DE;&#x5BF9;&#x8C61;</span>
+  <span class="hljs-keyword">let</span> _candidate = <span class="hljs-keyword">new</span> Person(parm)
+
+  _candidate.character = <span class="hljs-keyword">new</span> createCharacter(parm.character)
+  _candidate.work = <span class="hljs-keyword">new</span> createWork(parm.work)
+
+  <span class="hljs-keyword">return</span> _candidate
+}
+<span class="hljs-comment">// person&#x5B50;&#x7C7B;</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params">parm</span>) </span>{
+  <span class="hljs-keyword">this</span>.name = parm.name
+  <span class="hljs-keyword">this</span>.age = parm.age
+}
+<span class="hljs-comment">// &#x6027;&#x683C;&#x5B50;&#x7C7B;</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createCharacter</span>(<span class="hljs-params">character</span>) </span>{
+  <span class="hljs-keyword">this</span>.character = character
+}
+<span class="hljs-comment">// &#x5DE5;&#x4F5C;&#x5B50;&#x7C7B;</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createWork</span>(<span class="hljs-params">work</span>) </span>{
+  <span class="hljs-keyword">this</span>.work = work
+}
+
+<span class="hljs-comment">// &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5B9E;&#x4F8B;</span>
+<span class="hljs-keyword">let</span> teacter = <span class="hljs-keyword">new</span> Candidate({
+  name: <span class="hljs-string">&apos;kathy&apos;</span>,
+  age: <span class="hljs-number">18</span>,
+  character: <span class="hljs-string">&apos;kind&apos;</span>,
+  work: <span class="hljs-string">&apos;teacter&apos;</span>
+})
+</code></pre>
+<p>&#x4E0A;&#x9762;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x53EA;&#x662F;&#x4E00;&#x4E2A;&#x975E;&#x5E38;&#x7B80;&#x5355;&#x7684;&#x5EFA;&#x9020;&#x8005;&#x6A21;&#x5F0F;&#x4F8B;&#x5B50;&#xFF0C;&#x53EA;&#x662F;&#x7406;&#x89E3;&#x6982;&#x5FF5;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x4F7F;&#x7528;&#x4E2D;&#xFF0C;&#x5EFA;&#x9020;&#x8005;&#x6A21;&#x5F0F;&#x662F;&#x975E;&#x5E38;&#x590D;&#x6742;&#x7684;&#x3002;</p>
+<h3 id="new&#x7684;&#x4F5C;&#x7528;">new&#x7684;&#x4F5C;&#x7528;</h3>
+<p>&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x521B;&#x5EFA;&#x4E3B;&#x7C7B;&#x65F6;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;&#x4E86;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x6709;&#x5199;&#x540C;&#x5B66;&#x53EF;&#x80FD;&#x4F1A;&#x7591;&#x60D1;&#x4E0D;&#x662F;&#x90FD;&#x4F7F;&#x7528;this&#x7684;&#x5417;&#xFF1F;&#x4E3A;&#x4EC0;&#x4E48;&#x8FD9;&#x4E2A;&#x6784;&#x9020;&#x51FD;&#x6570;&#x662F;&#x957F;&#x8FD9;&#x6837;&#x7684;&#xFF0C;&#x5176;&#x5B9E;&#x8FD9;&#x6D89;&#x53CA;&#x5230;new&#x7684;&#x8FC7;&#x7A0B;&#x3002;</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Candidate</span>(<span class="hljs-params">parm</span>) </span>{
+  <span class="hljs-keyword">let</span> _candidate = <span class="hljs-keyword">new</span> Person(parm)
+
+  _candidate.character = <span class="hljs-keyword">new</span> createCharacter(parm.character)
+  _candidate.work = <span class="hljs-keyword">new</span> createWork(parm.work)
+
+  <span class="hljs-keyword">return</span> _candidate
+}
+
+<span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> Candidate()
+</code></pre>
+<p>&#x4E0B;&#x9762;&#x6765;&#x8BB2;&#x8BB2;&#x6784;&#x9020;&#x51FD;&#x6570;new&#x7684;&#x65F6;&#x5019;&#x90FD;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// &#x5E38;&#x89C1;&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params">name</span>) </span>{
+<span class="hljs-comment">//&#x6709;new&#x4E4B;&#x540E;&#xFF0C;&#x5F00;&#x59CB;&#x6267;&#x884C;&#x8FD9;&#x4E2A;&#x6784;&#x9020;&#x51FD;&#x6570;</span>
+   <span class="hljs-comment">// &#x7B2C;&#x4E00;&#x6B65; var this = {};         --&gt; this:{}  </span>
+    <span class="hljs-keyword">this</span>.name = name;
+    <span class="hljs-keyword">this</span>.age = <span class="hljs-number">20</span>;
+    <span class="hljs-keyword">this</span>.run = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{};
+    <span class="hljs-comment">/*   &#x7B2C;&#x4E8C;&#x6B65;  this:{
+                    name:name,
+                    age:20,
+                    run:..
+            } 
+    */</span> 
+    <span class="hljs-comment">//&#x7B2C;&#x4E09;&#x6B65; return this&#xFF1B;</span>
+}
+
+<span class="hljs-comment">// &#x5B9E;&#x4F8B;</span>
+<span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> Person()
+<span class="hljs-comment">// p &#x63A5;&#x6536;&#x4E86;&#x9690;&#x5F0F;&#x751F;&#x6210;&#x7684;this</span>
+</code></pre>
+<p>&#x6240;&#x4EE5;&#x6784;&#x9020;&#x51FD;&#x6570; <code>new</code>&#x4E86;&#x4E4B;&#x540E;&#x5B9E;&#x4F8B;&#x63A5;&#x6536;&#x4E86;&#x8FD4;&#x56DE;&#x6765;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x5728;&#x5EFA;&#x9020;&#x8005;&#x6A21;&#x5F0F;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x53EA;&#x662F;&#x81EA;&#x5DF1;&#x5B9A;&#x4E49;&#x4E86;&#x8FD9;&#x4E2A;<code>this</code>&#xFF0C;&#x7136;&#x540E;&#x8FD4;&#x56DE;&#x4E86;&#x3002;</p>
+<p>&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;<code>new</code>&#x9ED8;&#x8BA4;<code>return</code>&#x7684;&#x662F;&#x5BF9;&#x8C61;&#xFF0C;&#x6240;&#x4EE5;&#x5982;&#x679C;<code>return &#x57FA;&#x672C;&#x7C7B;&#x578B;</code>&#x4E86;&#xFF0C;&#x9ED8;&#x8BA4;&#x4F1A;&#x5FFD;&#x7565;</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>
+}
+<span class="hljs-keyword">let</span> p = <span class="hljs-keyword">new</span> Person()
+<span class="hljs-built_in">console</span>.log(p)      <span class="hljs-comment">// &#x8F93;&#x51FA;&#x7A7A;&#x5BF9;&#x8C61;</span>
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="1.html" class="navigation navigation-prev " aria-label="Previous page: 工厂模式">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="3.html" class="navigation navigation-next " aria-label="Next page: 单例模式">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"建造者模式","level":"1.3","depth":1,"next":{"title":"单例模式","level":"1.4","depth":1,"path":"chapter/3.md","ref":"chapter/3.md","articles":[]},"previous":{"title":"工厂模式","level":"1.2","depth":1,"path":"chapter/1.md","ref":"chapter/1.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter/2.md","mtime":"2020-07-02T15:22:42.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-07-02T15:15:27.920Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
