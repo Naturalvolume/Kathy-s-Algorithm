@@ -1,1 +1,1 @@
-# [学习设计模式]()
+# [学习设计模式](https://naturalvolume.github.io/Kathy-s-Algorithm/)
