@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>装饰器模式 · GitBook</title>
+        <title>MVC模式 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="5.html" />
+    <link rel="next" href="11.html" />
     
     
-    <link rel="prev" href="3.html" />
+    <link rel="prev" href="9.html" />
     
 
     </head>
@@ -141,7 +141,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="4.html">
+        <li class="chapter " data-level="1.5" data-path="4.html">
             
                 <a href="4.html">
             
@@ -219,7 +219,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.11" data-path="10.html">
+        <li class="chapter active" data-level="1.11" data-path="10.html">
             
                 <a href="10.html">
             
@@ -275,7 +275,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >装饰器模式</a>
+        <a href=".." >MVC模式</a>
     </h1>
 </div>
 
@@ -290,28 +290,66 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="&#x88C5;&#x9970;&#x5668;&#x6A21;&#x5F0F;">&#x88C5;&#x9970;&#x5668;&#x6A21;&#x5F0F;</h2>
-<p><strong>&#x7528;&#x9014;</strong>&#xFF1A;&#x6709;&#x65F6;&#x5019;&#x6211;&#x4EEC;&#x60F3;&#x6539;&#x53D8;&#x5B9E;&#x4F8B;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x4F46;&#x662F;&#x5728;&#x539F;&#x578B;&#x4E0A;&#x5E76;&#x6CA1;&#x6709;&#x6539;&#x53D8;&#x5B9E;&#x4F8B;&#x5C5E;&#x6027;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x6B64;&#x65F6;&#x5C31;&#x53EF;&#x7528;&#x88C5;&#x9970;&#x5668;&#x6A21;&#x5F0F;&#xFF0C;&#x7528;&#x51FD;&#x6570;&#x88C5;&#x9970;&#x5B9E;&#x4F8B;&#xFF0C;&#x6539;&#x53D8;&#x5C5E;&#x6027;&#x3002;
-<strong>&#x65B9;&#x6CD5;</strong>&#xFF1A;&#x5728;&#x4E0D;&#x6539;&#x53D8;&#x539F;&#x6709;&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x6DFB;&#x52A0;&#x5916;&#x90E8;&#x51FD;&#x6570;&#x6539;&#x53D8;&#x5B9E;&#x4F8B;&#x7684;&#x5C5E;&#x6027;&#x3002;</p>
-<pre><code class="lang-javascript"><span class="hljs-comment">// &#x8F66;</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Car</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">this</span>.price = <span class="hljs-number">10</span>
-}
-<span class="hljs-comment">// &#x7ED9;&#x8F66;&#x589E;&#x52A0;&#x5EA7;&#x6905;</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addSeat</span>(<span class="hljs-params">car</span>) </span>{
-  car.hasSeat = <span class="hljs-literal">true</span>
-  car.price += <span class="hljs-number">2</span>
-}
-<span class="hljs-comment">// &#x589E;&#x52A0;&#x955C;&#x5B50;</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addMirror</span>(<span class="hljs-params">car</span>) </span>{
-  car.hasMirror = <span class="hljs-literal">true</span>
-  car.price += <span class="hljs-number">1</span>
-}
-<span class="hljs-keyword">let</span> car = <span class="hljs-keyword">new</span> Car()
-addMirror(car)
-<span class="hljs-built_in">console</span>.log(car.price)    <span class="hljs-comment">// 11</span>
+                                <h2 id="mvc">MVC</h2>
+<p>MCV&#x662F;&#x524D;&#x7AEF;&#x6846;&#x67B6;&#x4E2D;&#x5E38;&#x89C1;&#x7684;&#x4E00;&#x79CD;&#x8BBE;&#x8BA1;&#x6A21;&#x5F0F;&#xFF0C;&#x5B83;&#x5C06;&#x9875;&#x9762;&#x53D8;&#x5316;&#x7684;&#x903B;&#x8F91;&#x5206;&#x4E3A;&#x89C6;&#x56FE;&#x5C42;view&#x3001;&#x63A7;&#x5236;&#x5C42;controller&#x3001;&#x6570;&#x636E;&#x5C42;model&#xFF0C;&#x4E09;&#x8005;&#x95F4;&#x7684;&#x903B;&#x8F91;&#x5173;&#x7CFB;&#x5982;&#x4E0B;&#xFF1A;
+<img src="https://img-blog.csdnimg.cn/20200703203027662.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU5Nzg4MA==,size_16,color_FFFFFF,t_70" alt="&#x5728;&#x8FD9;&#x91CC;&#x63D2;&#x5165;&#x56FE;&#x7247;&#x63CF;&#x8FF0;">
+&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;MVC</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// MVC</span>
+<span class="hljs-keyword">var</span> MVC = {}
+<span class="hljs-comment">// &#x6570;&#x636E;&#x5C42;&#xFF0C;&#x5B58;&#x50A8;&#x6570;&#x636E;&#x4FEE;&#x6539;&#x6570;&#x636E;</span>
+MVC.model = (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> data = {
+    sidebar: [{
+      title: <span class="hljs-string">&apos;sidebar1&apos;</span>,
+      href: <span class="hljs-string">&apos;./a.html&apos;</span>
+    }, {
+      title: <span class="hljs-string">&apos;sidebar2&apos;</span>,
+      href: <span class="hljs-string">&apos;./b.html&apos;</span>
+    }, {
+      title: <span class="hljs-string">&apos;sidebar3&apos;</span>,
+      href: <span class="hljs-string">&apos;./c.html&apos;</span>
+    }]
+  }
+  <span class="hljs-keyword">return</span> {
+    getDate: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
+      <span class="hljs-keyword">return</span> data[key]
+    }, 
+    setDate: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key, value</span>) </span>{
+      data[key] = value
+    }
+  }
+})()
+<span class="hljs-comment">// &#x89C6;&#x56FE;&#x5C42;&#xFF0C;&#x6839;&#x636E;&#x6570;&#x636E;&#x6E32;&#x67D3;&#x9875;&#x9762;</span>
+MVC.view = (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> m = MVC.model
+  <span class="hljs-keyword">var</span> view = {
+    createSidebar: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> data = m.getDate(<span class="hljs-string">&apos;sidebar&apos;</span>)
+      <span class="hljs-keyword">var</span> html = <span class="hljs-string">&apos;&apos;</span>
+      html += <span class="hljs-string">&apos;&lt;div class=&quot;sidebar&quot;&gt;&apos;</span>
+      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;data.length; i++) {
+        html += <span class="hljs-string">&apos;&lt;div class=&quot;sidebar-item&quot;&gt;&lt;a href=&quot;&apos;</span>+data[i].href+<span class="hljs-string">&apos;&quot;&gt;&apos;</span>+data[i].title+<span class="hljs-string">&apos;&lt;/a&gt;&lt;/div&gt;&apos;</span>
+      }
+      html += <span class="hljs-string">&apos;&lt;/div&gt;&apos;</span>
+      <span class="hljs-built_in">document</span>.body.innerHTML = html
+    }
+
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">v</span>) </span>{
+      view[v]()
+    }
+})
+<span class="hljs-comment">// &#x63A7;&#x5236;&#x5C42;</span>
+MVC.ctrl = (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> m = MVC.model
+  <span class="hljs-keyword">var</span> v = MVC.view
+  <span class="hljs-keyword">var</span> c = {
+    initSideBar: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      v(<span class="hljs-string">&apos;createSidebar&apos;</span>)
+    }
+  }
+})
 </code></pre>
-<p>&#x5F53;&#x8FD8;&#x60F3;&#x6539;&#x53D8;&#x8F66;&#x7684;&#x5176;&#x4ED6;&#x6027;&#x8D28;&#x6216;&#x8005;&#x589E;&#x52A0;&#x5C5E;&#x6027;&#x65F6;&#xFF0C;&#x76F4;&#x63A5;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x51FD;&#x6570;&#x5373;&#x53EF;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x6539;&#x53D8;&#x6784;&#x9020;&#x51FD;&#x6570;&#x3002;</p>
 
                                 
                                 </section>
@@ -339,12 +377,12 @@ addMirror(car)
 
             
                 
-                <a href="3.html" class="navigation navigation-prev " aria-label="Previous page: 单例模式">
+                <a href="9.html" class="navigation navigation-prev " aria-label="Previous page: 等待者模式">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="5.html" class="navigation navigation-next " aria-label="Next page: 组合模式">
+                <a href="11.html" class="navigation navigation-next " aria-label="Next page: MVVM模式">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -355,7 +393,7 @@ addMirror(car)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"装饰器模式","level":"1.5","depth":1,"next":{"title":"组合模式","level":"1.6","depth":1,"path":"chapter/5.md","ref":"chapter/5.md","articles":[]},"previous":{"title":"单例模式","level":"1.4","depth":1,"path":"chapter/3.md","ref":"chapter/3.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter/4.md","mtime":"2020-07-02T15:23:27.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-07-03T14:13:04.086Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"MVC模式","level":"1.11","depth":1,"next":{"title":"MVVM模式","level":"1.12","depth":1,"path":"chapter/11.md","ref":"chapter/11.md","articles":[]},"previous":{"title":"等待者模式","level":"1.10","depth":1,"path":"chapter/9.md","ref":"chapter/9.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter/10.md","mtime":"2020-07-03T13:04:27.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-07-03T14:13:04.086Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

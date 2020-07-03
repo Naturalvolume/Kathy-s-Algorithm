@@ -8,3 +8,6 @@
 * [观察者模式](chapter/6.md)
 * [策略模式](chapter/7.md)
 * [链模式](chapter/8.md)
+* [等待者模式](chapter/9.md)
+* [MVC模式](chapter/10.md)
+* [MVVM模式](chapter/11.md)
