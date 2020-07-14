@@ -9,5 +9,6 @@
 * [策略模式](chapter/7.md)
 * [链模式](chapter/8.md)
 * [等待者模式](chapter/9.md)
+* [代理模式](chapter/12.md)
 * [MVC模式](chapter/10.md)
 * [MVVM模式](chapter/11.md)
