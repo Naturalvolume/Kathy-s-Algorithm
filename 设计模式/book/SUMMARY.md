@@ -5,7 +5,7 @@
 * [单例模式](chapter/3.md)
 * [装饰器模式](chapter/4.md)
 * [组合模式](chapter/5.md)
-* [观察者模式](chapter/6.md)
+* [发布－订阅模式](chapter/6.md)
 * [策略模式](chapter/7.md)
 * [链模式](chapter/8.md)
 * [等待者模式](chapter/9.md)
