@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>装饰器模式 · GitBook</title>
+        <title>观察者模式 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="5.html" />
+    <link rel="next" href="6.html" />
     
     
-    <link rel="prev" href="3.html" />
+    <link rel="prev" href="5.html" />
     
 
     </head>
@@ -141,7 +141,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="4.html">
+        <li class="chapter " data-level="1.5" data-path="4.html">
             
                 <a href="4.html">
             
@@ -167,7 +167,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="13.html">
+        <li class="chapter active" data-level="1.7" data-path="13.html">
             
                 <a href="13.html">
             
@@ -301,7 +301,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >装饰器模式</a>
+        <a href=".." >观察者模式</a>
     </h1>
 </div>
 
@@ -316,28 +316,56 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="&#x88C5;&#x9970;&#x5668;&#x6A21;&#x5F0F;">&#x88C5;&#x9970;&#x5668;&#x6A21;&#x5F0F;</h2>
-<p><strong>&#x7528;&#x9014;</strong>&#xFF1A;&#x6709;&#x65F6;&#x5019;&#x6211;&#x4EEC;&#x60F3;&#x6539;&#x53D8;&#x5B9E;&#x4F8B;&#x7684;&#x5C5E;&#x6027;&#xFF0C;&#x4F46;&#x662F;&#x5728;&#x539F;&#x578B;&#x4E0A;&#x5E76;&#x6CA1;&#x6709;&#x6539;&#x53D8;&#x5B9E;&#x4F8B;&#x5C5E;&#x6027;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x6B64;&#x65F6;&#x5C31;&#x53EF;&#x7528;&#x88C5;&#x9970;&#x5668;&#x6A21;&#x5F0F;&#xFF0C;&#x7528;&#x51FD;&#x6570;&#x88C5;&#x9970;&#x5B9E;&#x4F8B;&#xFF0C;&#x6539;&#x53D8;&#x5C5E;&#x6027;&#x3002;
-<strong>&#x65B9;&#x6CD5;</strong>&#xFF1A;&#x5728;&#x4E0D;&#x6539;&#x53D8;&#x539F;&#x6709;&#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x6DFB;&#x52A0;&#x5916;&#x90E8;&#x51FD;&#x6570;&#x6539;&#x53D8;&#x5B9E;&#x4F8B;&#x7684;&#x5C5E;&#x6027;&#x3002;</p>
-<pre><code class="lang-javascript"><span class="hljs-comment">// &#x8F66;</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Car</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">this</span>.price = <span class="hljs-number">10</span>
+                                <h1 id="&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;">&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;</h1>
+<p>&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;&#x662F;&#x6709;&#x81F3;&#x5C11;&#x4E00;&#x4E2A;&#x89C2;&#x5BDF;&#x8005;&#xFF0C;&#x4E00;&#x4E2A;&#x53D1;&#x5E03;&#x8005;&#xFF0C;&#x89C2;&#x5BDF;&#x8005;&#x76D1;&#x542C;&#x53D1;&#x5E03;&#x8005;&#x7684;&#x4E8B;&#x4EF6;&#xFF0C;&#x5F53;&#x53D1;&#x5E03;&#x8005;&#x53D1;&#x5E03;&#x8BE5;&#x4E8B;&#x4EF6;&#x65F6;&#xFF0C;&#x5C31;&#x89E6;&#x53D1;&#x4E86;&#x89C2;&#x5BDF;&#x8005;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x3002;</p>
+<p>&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;&#x5728;&#x524D;&#x7AEF;&#x6846;&#x67B6;&#x4E2D;&#x975E;&#x5E38;&#x5E38;&#x89C1;&#x3002;</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// &#x4E3B;&#x4F53;&#xFF0C;&#x63A5;&#x6536;&#x72B6;&#x6001;&#x53D8;&#x5316;&#xFF0C;&#x89E6;&#x53D1;&#x6BCF;&#x4E2A;&#x89C2;&#x5BDF;&#x8005;</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Subject</span> </span>{
+  <span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-keyword">this</span>.state = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">this</span>.observers = []
+  }
+  getState() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.state
+  }
+  setState(state) {
+    <span class="hljs-keyword">this</span>.state = state
+    <span class="hljs-keyword">this</span>.notifyAllObservers()
+  }
+  attach(observer) {
+    <span class="hljs-keyword">this</span>.observers.push(observer)
+  }
+  notifyAllObservers() {
+    <span class="hljs-keyword">this</span>.observers.forEach(observer =&gt; {
+        observer.update()
+    })
+  }
 }
-<span class="hljs-comment">// &#x7ED9;&#x8F66;&#x589E;&#x52A0;&#x5EA7;&#x6905;</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addSeat</span>(<span class="hljs-params">car</span>) </span>{
-  car.hasSeat = <span class="hljs-literal">true</span>
-  car.price += <span class="hljs-number">2</span>
+
+<span class="hljs-comment">// &#x89C2;&#x5BDF;&#x8005;&#xFF0C;&#x7B49;&#x5F85;&#x88AB;&#x89E6;&#x53D1;</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Observer</span> </span>{
+  <span class="hljs-keyword">constructor</span>(name, subject) {
+    <span class="hljs-keyword">this</span>.name = name
+    <span class="hljs-keyword">this</span>.subject = subject
+    <span class="hljs-keyword">this</span>.subject.attach(<span class="hljs-keyword">this</span>)
+  }
+  update() {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${this.name}</span> update, state: <span class="hljs-subst">${this.subject.getState()}</span>`</span>)
+  }
 }
-<span class="hljs-comment">// &#x589E;&#x52A0;&#x955C;&#x5B50;</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addMirror</span>(<span class="hljs-params">car</span>) </span>{
-  car.hasMirror = <span class="hljs-literal">true</span>
-  car.price += <span class="hljs-number">1</span>
-}
-<span class="hljs-keyword">let</span> car = <span class="hljs-keyword">new</span> Car()
-addMirror(car)
-<span class="hljs-built_in">console</span>.log(car.price)    <span class="hljs-comment">// 11</span>
+
+<span class="hljs-comment">// &#x6D4B;&#x8BD5;&#x4EE3;&#x7801;</span>
+<span class="hljs-keyword">let</span> s = <span class="hljs-keyword">new</span> Subject()
+<span class="hljs-keyword">let</span> o1 = <span class="hljs-keyword">new</span> Observer(<span class="hljs-string">&apos;o1&apos;</span>, s)
+<span class="hljs-keyword">let</span> o2 = <span class="hljs-keyword">new</span> Observer(<span class="hljs-string">&apos;o2&apos;</span>, s)
+<span class="hljs-keyword">let</span> o3 = <span class="hljs-keyword">new</span> Observer(<span class="hljs-string">&apos;o3&apos;</span>, s)
+
+s.setState(<span class="hljs-number">1</span>)
+s.setState(<span class="hljs-number">2</span>)
+s.setState(<span class="hljs-number">3</span>)
 </code></pre>
-<p>&#x5F53;&#x8FD8;&#x60F3;&#x6539;&#x53D8;&#x8F66;&#x7684;&#x5176;&#x4ED6;&#x6027;&#x8D28;&#x6216;&#x8005;&#x589E;&#x52A0;&#x5C5E;&#x6027;&#x65F6;&#xFF0C;&#x76F4;&#x63A5;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x51FD;&#x6570;&#x5373;&#x53EF;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x6539;&#x53D8;&#x6784;&#x9020;&#x51FD;&#x6570;&#x3002;</p>
+<p>&#x53C2;&#x8003;&#xFF1A;<a href="https://www.jianshu.com/p/ccd893c84424" target="_blank">JS&#x8BBE;&#x8BA1;&#x6A21;&#x5F0F;-&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;&#xFF08;&#x6838;&#x5FC3;&#xFF09;</a></p>
+<h3 id="&#x4F7F;&#x7528;proxy&#x5B9E;&#x73B0;&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;"><a href="https://es6.ruanyifeng.com/#docs/reflect" target="_blank">&#x4F7F;&#x7528;Proxy&#x5B9E;&#x73B0;&#x89C2;&#x5BDF;&#x8005;&#x6A21;&#x5F0F;</a></h3>
 
                                 
                                 </section>
@@ -365,12 +393,12 @@ addMirror(car)
 
             
                 
-                <a href="3.html" class="navigation navigation-prev " aria-label="Previous page: 单例模式">
+                <a href="5.html" class="navigation navigation-prev " aria-label="Previous page: 组合模式">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="5.html" class="navigation navigation-next " aria-label="Next page: 组合模式">
+                <a href="6.html" class="navigation navigation-next " aria-label="Next page: 发布－订阅模式">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -381,7 +409,7 @@ addMirror(car)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"装饰器模式","level":"1.5","depth":1,"next":{"title":"组合模式","level":"1.6","depth":1,"path":"chapter/5.md","ref":"chapter/5.md","articles":[]},"previous":{"title":"单例模式","level":"1.4","depth":1,"path":"chapter/3.md","ref":"chapter/3.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter/4.md","mtime":"2020-07-02T15:23:27.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-09-18T02:33:29.453Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"观察者模式","level":"1.7","depth":1,"next":{"title":"发布－订阅模式","level":"1.8","depth":1,"path":"chapter/6.md","ref":"chapter/6.md","articles":[]},"previous":{"title":"组合模式","level":"1.6","depth":1,"path":"chapter/5.md","ref":"chapter/5.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter/13.md","mtime":"2020-09-09T11:35:52.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-09-18T02:33:29.453Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
